@@ -89,3 +89,12 @@ WHERE customer_id IS NULL OR customer_unique_id IS NULL OR customer_zip_code_pre
    OR customer_city IS NULL OR customer_state IS NULL;
 
 -- dans la requête plus haut on voit que la requete n'a rien retourné
+
+
+
+SELECT STATE, COUNT(DISTINCT customer_unique_id) as total_customers
+FROM Customers
+GROUP BY STATE
+ORDER BY STATE ; 
+
+-- calculez le nombre réel de client par état
