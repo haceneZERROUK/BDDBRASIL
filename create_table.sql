@@ -1,36 +1,100 @@
--- Execute this command to create the tables
--- sqlite3 olist.db < create_table.sql
-
-CREATE TABLE IF NOT EXISTS State_name (
-    state_name_id TEXT PRIMARY KEY,
-    state TEXT,
-    state_name TEXT,
+-- Create a table for Customers
+CREATE TABLE IF NOT EXISTS Customers (
+    customer_id TEXT PRIMARY KEY,
+    customer_unique_id TEXT,
+    customer_zip_code_prefix TEXT,
+    customer_city TEXT ,
+    customer_state TEXT
 );
 
-CREATE TABLE IF NOT EXISTS sellers (
-    seller_id TEXT PRIMARY KEY,
-    seller_zip_code_prefix TEXT,
-    seller_city TEXT,
-    seller_state TEXT,
+-- Create a table for Geolocalisation
+CREATE TABLE IF NOT EXISTS Geolocalisation (
+    geolocation_zip_code_prefix TEXT,
+    geolocation_lat REAL,
+    geolocation_lng REAL,
+    geolocation_city TEXT,
+    geolocation_state TEXT
 );
 
-CREATE TABLE IF NOT EXISTS products (
+CREATE TABLE IF NOT EXISTS Reviews (
+    review_id TEXT PRIMARY KEY,
+    order_id TEXT,
+    review_score FLOAT,
+    review_comment_message TEXT,
+    review_creation_date date,
+    review_answer_timestamp DATE,
+    timestamp_fiel_7 DATE
+);
+
+CREATE TABLE IF NOT EXISTS Orders (
+    order_id  TEXT PRIMARY KEY,
+    customer_id TEXT,
+    order_status TEXT,
+    order_purchase_timestamp DATE,
+    order_approved_at DATE,
+    order_delivered_carrier_date DATE,
+    order_delivered_customer_date DATE,
+    order_estimated_delivery_date DATE
+);
+
+CREATE TABLE IF NOT EXISTS OrdersItems (
+
+    order_item_id TEXT PRIMARY KEY,
+    order_id TEXT,
+    product_id  TEXT,
+    seller_id  TEXT,
+    shipping_limit_date  DATE,
+    price  FLOAT,
+    freight_value  FLOAT
+    );
+
+ CREATE TABLE paiements (
+    id_paiemnt TEXT PRIMARY KEY,
+    order_id TEXT,
+    payment_sequential TEXT,
+    payment_type TEXT,
+    payment_installments INT,
+    payment_value FLOAT
+);   
+
+CREATE TABLE Products (
     product_id TEXT PRIMARY KEY,
-    state TEXT FOREIGN KEY,
     product_category_name TEXT,
-    product_name_lenght TEXT,
-    product_description_lenght TEXT,
-    product_photos_qty TEXT,
-    product_weight_g TEXT,
-    product_lenght_cm TEXT,
-    product_height_cm TEXT,
-    product_widht_cm TEXT,
-                        
+    product_name_length INT,
+    product_description_length INT,
+    product_photos_qty INT,
+    product_weight_g INT,
+    product_length_cm INT,
+    product_height_cm INT,
+    product_width_cm INT
 );
 
-CREATE TABLE IF NOT EXISTS product_category_name_translation (
-    id_producti_category_name TEXT PRIMARY KEY,
-    product_category_name TEXT,
-    product_category_name_english TEXT,
-    strproduct_category_name_englis,
-);
+
+ -- sqlite3 Olist.db < create_table.sql
+
+SELECT COUNT(DISTINCT geolocation_city) as nombre_villes, COUNT( DISTINCT geolocation_state) as nombre_etats
+FROM geolocalisation;
+
+-- Le nombre de clients viennent de 8011 villes et de 27 états
+
+SELECT COUNT(DISTINCT customer_city) as nombre_villes
+FROM Customers
+WHERE customer_state = 'SP';
+
+-- le nombre de villes différentes dans l'étant de Sao Paulo est de 629
+
+SELECT *
+FROM Customers
+WHERE customer_id IS NULL OR customer_unique_id IS NULL OR customer_zip_code_prefix IS NULL
+   OR customer_city IS NULL OR customer_state IS NULL;
+
+-- dans la requête plus haut on voit que la requete n'a rien retourné
+
+
+
+SELECT STATE, COUNT(DISTINCT customer_unique_id) as total_customers
+FROM Customers
+GROUP BY STATE
+ORDER BY STATE ; 
+
+-- calculez le nombre réel de client par état
