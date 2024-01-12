@@ -96,4 +96,3 @@ group by customer_state
 ORDER BY customer_state;
 
 -- le code du dessus permet de trouver le nombre de clients par état
-
