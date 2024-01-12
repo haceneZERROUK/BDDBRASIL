@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 Olist.db
 /data
+save.sql
