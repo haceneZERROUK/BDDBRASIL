@@ -90,10 +90,10 @@ WHERE customer_id IS NULL OR customer_unique_id IS NULL OR customer_zip_code_pre
 
 -- dans la requête plus haut on voit que la requete n'a rien retourné
 
+
 SELECT customer_state, COUNT(customer_unique_id) as total_customers
 FROM Customers
 group by customer_state
 ORDER BY customer_state;
 
 -- le code du dessus permet de trouver le nombre de clients par état
-
